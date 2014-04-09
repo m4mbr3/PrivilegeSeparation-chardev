@@ -64,7 +64,7 @@ driver_read(struct file *filep,
      * If there is no messages wait for them. 
      * 
      */
-    if (*msg_Ptr == 0) interruptible_sleep_on(&wq);
+    interruptible_sleep_on(&wq);
         
 
     /*
