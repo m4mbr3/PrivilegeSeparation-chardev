@@ -1,7 +1,7 @@
 #include <linux/module.h>
 #include <net/sock.h>
 #include <linux/netlink.h>
-
+#include <linux/time.h>
 #define FAIL -1
 #define SUCCESS 0
 extern struct sock *sk_b;
@@ -21,7 +21,9 @@ static void ps_rcv_msg(struct sk_buff *skb)
     else {
         strncpy(ps_buffer,(char *) nlmsg_data(nlh) , sizeof(ps_buffer));           
         printk("PS_PWD: waking up the syscall \n");
+        while (list_empty(&ps_wait_for_msg.task_list)) udelay(20);
         wake_up_interruptible(&ps_wait_for_msg);
+        printk("PS_PWD: waked up the syscall \n");
     }
 }    
 
